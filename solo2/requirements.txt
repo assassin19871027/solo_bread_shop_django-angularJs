@@ -1,11 +1,11 @@
 Django==1.9.6
 stripe==1.32.2
-psycopg2
+psycopg2==2.6.2
 geopy
 django-allauth
 twilio
 djangorestframework
 markdown
 django-filter
-django-rest-swagger
-Pillow
+django-rest-swagger==0.3.10
+Pillow==3.3.0

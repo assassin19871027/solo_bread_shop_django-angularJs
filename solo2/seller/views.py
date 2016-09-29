@@ -1,6 +1,5 @@
 from django.shortcuts import render
 
-# Create your views here.
 from models import Product
 from rest_framework import viewsets
 from serializers import ProductSerializer
