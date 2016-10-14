@@ -1,0 +1,36 @@
+<section class="container-fluid with-maxwidth chapter" ng-controller="CtrlProductDetail">
+
+    <article class="article">
+        <div class="row">
+            <div class="col-md-4"  style="padding: 20px;">
+                <div class="card card-white">
+                    <div class="card-header">
+                        <img ng-src="{{ selected_product.baker_logo }}" class="baker-avatar">
+                        <span class="card-title">{{ selected_product.baker_name }}</span>
+                    </div>
+                    <div class="card-content bg-warning">
+                        Get {{selected_product.min_order_unit}} delivered in 1 hour for {{ selected_product.min_order_amount | currency }}
+                    </div>
+                    <div class="card-image">
+                        <img ng-src="{{ selected_product.image }}">
+                        <span class="card-title">{{ selected_product.name }}</span>
+                    </div>
+                    <div class="card-content">
+                        <div class="col-xs-6"><b>{{ selected_product.ingredients }}</b></div>
+                        <div class="col-xs-6">
+                            <b class="pull-right">{{selected_product.min_order_unit}} for {{ selected_product.min_order_amount | currency }}</b>
+                        </div>
+                    </div>
+
+                    <div class="card-content">
+                        {{ selected_product.description }}
+                    </div>
+                    <div class="card-action bg-primary" style="text-align: center;">
+                        <a href ng-click="add_cart(selected_product)">Add to Cart</a>
+                    </div>
+                </div>            
+            </div>
+        </div>
+    </article>    
+
+</section>

@@ -1,0 +1,27 @@
+<section class="container-fluid with-maxwidth chapter" ng-controller="CtrlBuy">
+
+    <article class="article">
+        <div class="row">
+            <div class="col-md-4" ng-repeat="product in products.results | filter:productFilterFn" style="padding: 20px;">
+                <div class="card card-white">
+                    <div class="card-image" ng-click="show_detail(product)">
+                        <img ng-src="{{ product.image }}">
+                        <span class="card-title">{{ product.name }}</span>
+                    </div>
+                    <div class="card-action">
+                        <a href="javascript:;">Likes</a>
+                        <a href="javascript:;" class="color-primary pull-right">Share</a>
+                    </div>
+                    <div class="card-content">
+                        {{ product.description }}
+                    </div>
+                    <div class="card-action">
+                        <a href ng-click="add_cart(product)">Add to Cart</a>
+                        <a href="javascript:;" class="color-primary pull-right">Learn more</a>
+                    </div>
+                </div>            
+            </div>
+        </div>
+    </article>    
+
+</section>
