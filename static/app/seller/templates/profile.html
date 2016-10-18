@@ -1,0 +1,46 @@
+<section class="container-fluid with-maxwidth chapter" ng-controller="CtrlSellerDetail">
+
+    <article class="article">
+        <div class="row">
+            <div class="col-md-4"  style="padding: 20px;">
+                <div class="card card-white">
+                    <div class="card-content">
+                        <div class="card-title">{{ seller.business_name }}</div>
+                    </div>
+                    <div class="card-content row">
+                        <div class="col-xs-4">
+                            <img ng-src="{{ seller.logo }}" class="img-responsive">
+                        </div>
+                        <div class="col-xs-8">
+                            <div>Bakery Type</div>
+                            <div>License Number: <span class="pull-right">{{ seller.license_number }}</span></div>
+                            <div>Description:</div>
+                            <div>{{ seller.business_description }}</div>
+                        </div>
+                        <div class="col-xs-6">
+                            <div>{{ seller.business_phone }}</div>
+                            <div>{{ seller.business_email }}</div>
+                        </div>
+                    </div>
+                    <div class="row product_tiles">
+                        <div class="col-xs-4" ng-repeat="product in seller.products">
+                            <img class="img-responsive" ng-src="{{ product.image }}">
+                        </div>
+                        <div class="col-xs-4 text-center" style="border: 1px;">
+                            <a href="#/app2/product/add">
+                                <img class="" ng-src="/static/assets/images/add.jpg" style="border: 0;">
+                            </a>
+                        </div>
+                    </div>
+                    <div class="card-action" style="text-align: center;">
+                        <a ui-wave href="javascript:;" class="btn-icon btn-icon-round btn-icon-sm btn-twitter"><i class="fa fa-twitter"></i></a>
+                        <a ui-wave href="javascript:;" class="btn-icon btn-icon-round btn-icon-sm btn-facebook"><i class="fa fa-facebook"></i></a>
+                        <a ui-wave href="javascript:;" class="btn-icon btn-icon-round btn-icon-sm btn-pinterest"><i class="fa fa-pinterest"></i></a>
+                        <a ui-wave href="javascript:;" class="btn-icon btn-icon-round btn-icon-sm btn-instagram"><i class="fa fa-instagram"></i></a>
+                    </div>
+                </div>            
+            </div>
+        </div>
+    </article>    
+
+</section>

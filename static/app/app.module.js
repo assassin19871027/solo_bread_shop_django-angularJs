@@ -26,17 +26,12 @@
         // App
         ,'app.calendar'
         ,'app.task'
+
         ,'buy.controllers'
         ,'buy.services'
         ,'cart'
+        ,'seller.controllers'
+        ,'seller.services'
     ]);
 
 })();
-
-
-
-
-
-
-    
-

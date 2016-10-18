@@ -31,6 +31,10 @@ angular.module('app')
                     url: '/ui/product/detail',
                     templateUrl: '/static/app/buy/templates/product_detail.html'
                 })
+                .state('app2.product-add', {
+                    url: '/product/add',
+                    templateUrl: '/static/app/buy/templates/product_add.html'
+                })
                 .state('app2.page-about', {
                     url: '/page/about',
                     templateUrl: '/static/app/page/about.html'
@@ -38,6 +42,10 @@ angular.module('app')
                 .state('app2.page-cart', {
                     url: '/page/cart',
                     templateUrl: '/static/app/buy/templates/cart.html'
+                })
+                .state('app2.seller-profile', {
+                    url: '/seller/profile',
+                    templateUrl: '/static/app/seller/templates/profile.html'
                 })
                 // eCommerce
                 .state('app.ecommerce-products', {

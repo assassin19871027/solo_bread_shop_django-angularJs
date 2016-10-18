@@ -49,7 +49,7 @@ class Baker(normal_models.Model):
 
     license_type = models.IntegerField(choices=LICENSE_TYPE, default=2)
     license_expiration_date = models.DateTimeField()
-    license_number = models.IntegerField(blank=True, null=True)
+    license_number = models.CharField(max_length=50, blank=True, null=True)
 
     began_at = models.DateTimeField()
     time_zone = normal_models.CharField(max_length=50, blank=True, null=True)

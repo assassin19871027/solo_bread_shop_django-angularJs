@@ -3,14 +3,15 @@
     <article class="article">
     <div class="card card-white">
         <div ng-repeat="product in products" class="card-content row">
-            <div class="col-xs-6"><img ng-src="{{ product.image }}" class="img-responsive thumb"></div>
+            <div class="col-xs-6">
+                <img ng-src="{{ product.image }}" class="img-responsive thumbnail">
+            </div>
             <div class="col-xs-6">
                 <h4>{{ product.name }}</h4>
                 <div>Baker: <span class="pull-right">{{ product.baker_name }}</span></div>
                 <div>Quantity: <span class="pull-right">{{ product.quantity }}</span></div>
                 <div>Unit Price: <span class="pull-right">{{ product.unit_price | currency }}</span></div>
-                <div>Price: <span class="pull-right">{{ product.quantity * product.unit_price | currency }}</span></div>
-                
+                <div>Price: <span class="pull-right">{{ product.quantity * product.unit_price | currency }}</span></div>            
             </div>
         </div>
         <div class="card-content row">

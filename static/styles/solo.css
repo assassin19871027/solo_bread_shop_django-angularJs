@@ -3,3 +3,17 @@
 	width: auto;
 	margin: 8px 10px 8px 15px;
 }
+
+.product_tiles {
+	margin: 5px;
+	padding: 0;
+}
+
+.product_tiles .col-xs-4 {
+	padding: 3px;
+}
+
+.product_tiles img {
+	border: 1px;
+	border-style: solid;
+}
