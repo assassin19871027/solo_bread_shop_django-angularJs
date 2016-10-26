@@ -141,3 +141,16 @@ STATICFILES_DIRS = [
 STATIC_URL = '/static/'
 MEDIA_URL = STATIC_URL + 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, *MEDIA_URL.strip("/").split("/"))
+
+# For dev
+STRIPE_KEYS = {
+    'API_KEY': 'sk_test_QqlkG4EYvRku2zvzrZRksmwJ',
+    'PUBLIC_KEY': 'pk_test_egZpQehcB86xWgcr0n1eZluM',
+    'CLIENT_ID': 'ca_8IFn5chY6QPiJ4ayx9roSbAqrIA5tZgx',
+}
+
+FACEBOOK_SECRET = '3c9a68e9d6a29b6f240112c7c6998b70'
+TWITTER_CONSUMER_KEY = 'J6eeF1zgj7CmGGBO5ARPMPbrC'
+TWITTER_CONSUMER_SECRET = 'OMcmHxnOBIR6VdIBshsznk25P6VpWTHfVyQBZ63JMaluGOLbsW'
+TWITTER_CALLBACK_URL = 'http://127.0.0.1:8000/auth/twitter'
+
