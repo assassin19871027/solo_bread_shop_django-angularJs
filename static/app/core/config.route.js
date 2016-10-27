@@ -1,13 +1,11 @@
-
 angular.module('app')
-    .config(['$stateProvider', '$urlRouterProvider', '$ocLazyLoadProvider',
-
-        function($stateProvider, $urlRouterProvider, $ocLazyLoadProvider) {
+    .config(['$stateProvider', '$urlRouterProvider', '$ocLazyLoadProvider', '$authProvider',
+        function($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, $authProvider) {
             $urlRouterProvider
                 .otherwise('app2/ui/products');
 
             $stateProvider
-                // Overall
+            // Overall
                 .state('app', {
                     url: '/app',
                     templateUrl: "/static/app/app.html"
@@ -16,13 +14,14 @@ angular.module('app')
                     url: '/app2',
                     templateUrl: "/static/app/app2.html" // No app-sidebar, the rest is the same with app.html
                 })
-
-                // Home
                 .state('app.dashboard', {
                     url: '/dashboard',
                     templateUrl: "/static/app/dashboard/dashboard.html"
                 })
-
+                .state('app2.login', {
+                    url: '/login',
+                    templateUrl: '/static/app/seller/templates/login.html'
+                })
                 .state('app2.ui-products', {
                     url: '/ui/products',
                     templateUrl: '/static/app/buy/templates/product_list.html'
@@ -56,12 +55,6 @@ angular.module('app')
                     url: '/ecommerce/horizontal-products',
                     templateUrl: 'app/ecommerce/horizontal-products.html'
                 })
-                .state('app.ecommerce-invoice', {
-                    url: '/ecommerce/invoice',
-                    templateUrl: 'app/ecommerce/invoice.html'
-                })
-
-                // Extra
                 .state('404', {
                     url: '/404',
                     templateUrl: "app/page-extra/404.html"
@@ -70,30 +63,23 @@ angular.module('app')
                     url: '/500',
                     templateUrl: "app/page-extra/500.html"
                 })
-                .state('signin', {
-                    url: '/signin',
-                    templateUrl: 'app/page-extra/signin.html'
-                })
-                .state('signup', {
-                    url: '/signup',
-                    templateUrl: 'app/page-extra/signup.html'
-                })
-                .state('forgot-password', {
-                    url: '/forgot-password',
-                    templateUrl: 'app/page-extra/forgot-password.html'
-                })
-                .state('confirm-email', {
-                    url: '/confirm-email',
-                    templateUrl: 'app/page-extra/confirm-email.html'
-                })
-                .state('lock-screen', {
-                    url: '/lock-screen',
-                    templateUrl: 'app/page-extra/lock-screen.html'
-                })
                 .state('maintenance', {
                     url: '/maintenance',
                     templateUrl: "app/page-extra/maintenance.html"
-                })
-            ;
+                });
+
+            $authProvider.oauth2({
+                name: 'stripe',
+                url: '/auth/stripe',
+                clientId: 'ca_8Qcy5FPjST3HuFl7xXjisiodyjKE5d8V',
+                redirectUri: window.location.origin || window.location.protocol + '//' + window.location.host,
+                authorizationEndpoint: 'https://connect.stripe.com/oauth/authorize',
+                scope: ['email'],
+                scopeDelimiter: ',',
+                display: 'popup',
+                oauthType: '2.0',
+                popupOptions: { width: 580, height: 400 }
+            });
+
         }
     ]);

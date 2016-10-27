@@ -32,6 +32,7 @@
         ,'cart'
         ,'seller.controllers'
         ,'seller.services'
+        ,'satellizer'
     ]);
 
 })();
