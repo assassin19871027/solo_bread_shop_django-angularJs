@@ -1,12 +1,13 @@
 from datetime import datetime, timedelta
-# import os
-# import stripe
-# import jwt
-# import json
-# import requests
-# import base64
+import stripe
+import jwt
+import json
+import requests
 
 from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
+from django.conf import settings
+from django.http import JsonResponse
 
 from models import Product, Baker
 from rest_framework import viewsets
@@ -52,7 +53,7 @@ def facebook():
     if request.headers.get('Authorization'):
         user = User.query.filter_by(facebook=profile['id']).first()
         if user:
-            response = jsonify(message='There is already a Facebook account that belongs to you')
+            response = json.dumps(message='There is already a Facebook account that belongs to you')
             response.status_code = 409
             return response
 
@@ -60,7 +61,7 @@ def facebook():
 
         user = User.query.filter_by(id=payload['sub']).first()
         if not user:
-            response = jsonify(message='User not found')
+            response = json.dumps(message='User not found')
             response.status_code = 400
             return response
 
@@ -68,28 +69,29 @@ def facebook():
         user.display_name = user.display_name or profile['name']
         db.session.commit()
         token = create_token(user)
-        return jsonify(token=token)
+        return json.dumps(token=token)
 
     # Step 4. Create a new account or return an existing one.
     user = User.query.filter_by(facebook=profile['id']).first()
     if user:
         token = create_token(user)
-        return jsonify(token=token)
+        return json.dumps(token=token)
 
     u = User(facebook=profile['id'], display_name=profile['name'], email=profile['email'])
     db.session.add(u)
     db.session.commit()
     token = create_token(u)
-    return jsonify(token=token)
+    return json.dumps(token=token)
 
 
-# @app.route('/auth/stripe', methods=['POST'])
-def stripe_():
+@csrf_exempt
+def stripe_(request):
     access_token_url = 'https://connect.stripe.com/oauth/token'
+    request_json = json.loads(request.body)
     params = {
-        'client_id': request.json['clientId'],
-        'client_secret': app.config['STRIPE_API_KEY'],
-        'code': request.json['code'],   
+        'client_id': request_json['clientId'],
+        'client_secret': settings.STRIPE_KEYS['API_KEY'],
+        'code': request_json['code'],   
         'grant_type': 'authorization_code',
     }
 
@@ -98,39 +100,62 @@ def stripe_():
     access_token = r.json()
 
     # Step 2. Retrieve information about the current user.
-    stripe.api_key = app.config['STRIPE_API_KEY']
+    stripe.api_key = settings.STRIPE_KEYS['API_KEY']
     profile = stripe.Account.retrieve(access_token["stripe_user_id"])
     
     # Step 3. (optional) Link accounts.
-    if request.headers.get('Authorization'):
-        user = User.query.filter_by(facebook=profile['id']).first()
+    if request.META.get('Authorization'):
+        print 'Step 3 triggered ###'
+        user = Baker.objects.filter(stripe_acct_id=profile['id']).first()
         if user:
-            response = jsonify(message='There is already a Facebook account that belongs to you')
+            response = JsonResponse({'message': 'There is already a stripe account that belongs to you'})
             response.status_code = 409
             return response
 
         payload = parse_token(request)
 
-        user = User.query.filter_by(id=payload['sub']).first()
+        user = Baker.objects.filter(id=payload['sub']).first()
         if not user:
-            response = jsonify(message='User not found')
+            response = JsonResponse({'message': 'User not found'})
             response.status_code = 400
             return response
 
-        user.facebook = profile['id']
-        user.display_name = user.display_name or profile['name']
-        db.session.commit()
+        user.stripe_acct_id = profile['id']
+        user.display_name = user.username or profile['display_name']
+        user.save()
         token = create_token(user)
-        return jsonify(token=token)
+        return JsonResponse({'token': token})
 
     # Step 4. Create a new account or return an existing one.
-    user = User.query.filter_by(facebook=profile['id']).first()
+    user = Baker.objects.filter(stripe_acct_id=profile['id']).first()
     if user:
         token = create_token(user)
-        return jsonify(token=token)
+        return JsonResponse({'token': token})
 
-    u = User(facebook=profile['id'], display_name=profile['name'], email=profile['email'])
-    db.session.add(u)
-    db.session.commit()
-    token = create_token(u)
-    return jsonify(token=token)
+    user = Baker(logo=profile['business_logo'], 
+                 business_name=profile['business_name'], 
+                 url_business_website=profile['business_url'],
+                 first_name=profile['display_name'].split('.')[0],
+                 last_name=profile['display_name'].split('.')[1],
+                 username=profile['email'].split('@')[0],
+                 email=profile['email'],
+                 stripe_acct_id=profile['id'])
+
+    user.save()
+    token = create_token(user)
+    return JsonResponse({'token': token})
+
+
+def create_token(user):
+    payload = {
+        'sub': user.id,
+        'iat': datetime.utcnow(),
+        'exp': datetime.utcnow() + timedelta(days=14)
+    }
+    token = jwt.encode(payload, settings.TOKEN_SECRET)
+    return token.decode('unicode_escape')
+
+
+def parse_token(req):
+    token = req.META.get('Authorization').split()[1]
+    return jwt.decode(token, app.config['TOKEN_SECRET'])

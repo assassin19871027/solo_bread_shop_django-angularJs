@@ -33,6 +33,7 @@
         ,'seller.controllers'
         ,'seller.services'
         ,'satellizer'
+        ,'toastr'
     ]);
 
 })();

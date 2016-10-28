@@ -144,10 +144,14 @@ MEDIA_ROOT = os.path.join(BASE_DIR, *MEDIA_URL.strip("/").split("/"))
 
 # For dev
 STRIPE_KEYS = {
-    'API_KEY': 'sk_test_QqlkG4EYvRku2zvzrZRksmwJ',
+    'API_KEY': 'sk_test_1AFSPD5Dg8RihyPPtylWiSsR',
     'PUBLIC_KEY': 'pk_test_egZpQehcB86xWgcr0n1eZluM',
-    'CLIENT_ID': 'ca_8IFn5chY6QPiJ4ayx9roSbAqrIA5tZgx',
+    'CLIENT_ID': 'ca_8Qcy5FPjST3HuFl7xXjisiodyjKE5d8V',
 }
+
+TOKEN_SECRET = '098098ug034hg34g934f343o#G#G$#$#$G'
+
+AUTH_USER_MODEL = 'seller.Baker'
 
 FACEBOOK_SECRET = '3c9a68e9d6a29b6f240112c7c6998b70'
 TWITTER_CONSUMER_KEY = 'J6eeF1zgj7CmGGBO5ARPMPbrC'

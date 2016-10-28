@@ -5,6 +5,7 @@ from django.contrib.gis import geos
 from django.db import models as normal_models
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
+from django.contrib.auth.models import AbstractUser, UserManager
 from geopy.geocoders import GoogleV3
 from geopy.exc import GeocoderQueryError
 from urllib2 import URLError
@@ -35,23 +36,23 @@ DELIVERY_FEE = (
     (3, 'None'))
 
 
-class Baker(normal_models.Model):
+class Baker(AbstractUser):
     logo = models.ImageField(upload_to='bakers')
-    business_name = models.CharField(max_length=100)
-    business_owner_name = models.CharField(max_length=100)
-    business_address = models.CharField(max_length=100)
-    business_phone = models.CharField(max_length=20)
-    business_cell_phone = models.CharField(max_length=20)
-    business_email = models.EmailField()
-    business_owner_email = models.EmailField()
-    business_description = models.TextField()
-    business_contact_name = models.CharField(max_length=100)
+    business_name = models.CharField(max_length=100, blank=True, null=True)
+    business_owner_name = models.CharField(max_length=100, blank=True, null=True)
+    business_address = models.CharField(max_length=100, blank=True, null=True)
+    business_phone = models.CharField(max_length=20, blank=True, null=True)
+    business_cell_phone = models.CharField(max_length=20, blank=True, null=True)
+    business_email = models.EmailField(blank=True, null=True)
+    business_owner_email = models.EmailField(blank=True, null=True)
+    business_description = models.TextField(blank=True, null=True)
+    business_contact_name = models.CharField(max_length=100, blank=True, null=True)
 
     license_type = models.IntegerField(choices=LICENSE_TYPE, default=2)
-    license_expiration_date = models.DateTimeField()
+    license_expiration_date = models.DateTimeField(blank=True, null=True)
     license_number = models.CharField(max_length=50, blank=True, null=True)
 
-    began_at = models.DateTimeField()
+    began_at = models.DateTimeField(blank=True, null=True)
     time_zone = normal_models.CharField(max_length=50, blank=True, null=True)
 
     url_pinterest = models.CharField(max_length=100, blank=True, null=True)
@@ -65,10 +66,11 @@ class Baker(normal_models.Model):
     yelp_comments = models.TextField(blank=True, null=True)
 
     customer_rating = models.FloatField(blank=True, null=True)
-    is_active = models.BooleanField()
+    stripe_acct_id = models.CharField(max_length=25)
+    objects = UserManager()
 
     def __str__(self):
-        return self.business_name
+        return self.username
 
         
 class Product(normal_models.Model):

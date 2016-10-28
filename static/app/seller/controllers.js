@@ -4,22 +4,22 @@ angular.module('seller.controllers', ['buy.services'])
             $scope.seller = Seller.query({ pk: 1 });
         }
     ])
-    .controller('LoginCtrl', function($scope, $location, $auth) {
+    .controller('LoginCtrl', function($scope, $location, $auth, toastr) {
         $scope.authenticate = function(provider) {
             $auth.authenticate(provider)
                 .then(function() {
-                    // toastr.success('You have successfully signed in with ' + provider + '!');
-                    $location.path('/');
+                    toastr.success('You have successfully signed in with ' + provider + '!');
+                    $location.path('/app2/seller/profile');
                 })
                 .catch(function(error) {
                     if (error.message) {
                         // Satellizer promise reject error.
-                        // toastr.error(error.message);
+                        toastr.error(error.message);
                     } else if (error.data) {
                         // HTTP response error from server
-                        // toastr.error(error.data.message, error.status);
+                        toastr.error(error.data.message, error.status);
                     } else {
-                        // toastr.error(error);
+                        toastr.error(error);
                     }
                 });
         };

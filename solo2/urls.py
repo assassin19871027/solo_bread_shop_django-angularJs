@@ -21,4 +21,5 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     # url(r'^docs/', include('rest_framework_swagger.urls'))
     url(r'^$', TemplateView.as_view(template_name="index.html")),
+    url(r'^auth/stripe', views.stripe_, name='stripe_auth'),
 ]

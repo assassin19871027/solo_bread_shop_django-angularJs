@@ -9,3 +9,4 @@ markdown
 django-filter
 django-rest-swagger==0.3.10
 Pillow==3.3.0
+PyJWT
