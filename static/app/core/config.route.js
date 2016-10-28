@@ -1,6 +1,6 @@
 angular.module('app')
-    .config(['$stateProvider', '$urlRouterProvider', '$ocLazyLoadProvider', '$authProvider',
-        function($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, $authProvider) {
+    .config(['$stateProvider', '$urlRouterProvider', '$ocLazyLoadProvider', '$authProvider', 'StripeCheckoutProvider',
+        function($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, $authProvider, StripeCheckoutProvider) {
             $urlRouterProvider
                 .otherwise('app2/ui/products');
 
@@ -40,7 +40,10 @@ angular.module('app')
                 })
                 .state('app2.page-cart', {
                     url: '/page/cart',
-                    templateUrl: '/static/app/buy/templates/cart.html'
+                    templateUrl: '/static/app/buy/templates/cart.html',
+                    resolve: {
+                        stripe: StripeCheckoutProvider.load
+                    }
                 })
                 .state('app2.seller-profile', {
                     url: '/seller/profile',
@@ -81,5 +84,8 @@ angular.module('app')
                 popupOptions: { width: 580, height: 400 }
             });
 
+            StripeCheckoutProvider.defaults({
+                key: "pk_test_egZpQehcB86xWgcr0n1eZluM"
+            });
         }
     ]);

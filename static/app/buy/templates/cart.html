@@ -1,4 +1,4 @@
-<section class="container-fluid with-maxwidth chapter" ng-controller="CtrlCart">
+<section class="container-fluid with-maxwidth chapter" ng-controller="CtrlCart as ctrl">
 
     <article class="article">
     <div class="card card-white">
@@ -21,7 +21,7 @@
             </div>
         </div>
         <div class="card-action bg-primary" style="text-align: center;">
-            <a href ng-click="add_cart(selected_product)">Checkout</a>
+            <a href ng-click="ctrl.doCheckout()">Checkout</a>
         </div>
     </div>        
     </article>    

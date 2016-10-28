@@ -34,6 +34,7 @@
         ,'seller.services'
         ,'satellizer'
         ,'toastr'
+        ,'stripe.checkout'
     ]);
 
 })();
