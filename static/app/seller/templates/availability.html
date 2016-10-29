@@ -1,0 +1,19 @@
+<section class="container-fluid with-maxwidth chapter" ng-controller="CtrlSellerAvailability">
+    <article class="article">
+        <div class="row">
+            <div class="col-md-4" style="padding: 20px;">
+                <div class="card card-white">
+                    <div class="card-content">
+                        <span class="card-title">Availability</span>
+                        <md-content layout-gt-sm="row" layout-padding ng-repeat="slider in rangeSlider">
+                            <md-checkbox ng-model="slider.enabled" ng-change="set_time_enable(slider, slider.enabled)" aria-label="Checkbox 1">
+                            </md-checkbox>
+                            <strong style="display: inline-block; margin-left: -25px;">{{ slider.title }}</strong>
+                            <rzslider data-rz-slider-model="slider.minValue" data-rz-slider-high="slider.maxValue" data-rz-slider-options="slider.options"></rzslider>
+                        </md-content>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </article>
+</section>

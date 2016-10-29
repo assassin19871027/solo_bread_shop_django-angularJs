@@ -36,6 +36,7 @@
         ,'toastr'
         ,'stripe.checkout'
         ,'flow'
+        ,'rzModule'
     ]);
 
 })();

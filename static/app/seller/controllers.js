@@ -25,19 +25,27 @@ angular.module('seller.controllers', ['buy.services'])
         };
     });
 
-angular.module('product.controllers', ['flow'])
-    .config(['flowFactoryProvider', function(flowFactoryProvider) {
-        flowFactoryProvider.defaults = {
-            target: 'upload.php',
-            permanentErrors: [404, 500, 501],
-            maxChunkRetries: 1,
-            chunkRetryInterval: 5000,
-            simultaneousUploads: 4,
-            singleFile: true
-        };
-        flowFactoryProvider.on('catchAll', function(event) {
-            console.log('catchAll', arguments);
-        });
-        // Can be used with different implementations of Flow.js
-        // flowFactoryProvider.factory = fustyFlowFactory;
-    }]);
+angular.module('app')
+    .controller('CtrlSellerAvailability', function($scope, Product, $rootScope, cart, StripeCheckout, $log, toastr) {
+        $scope.dow = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+        $scope.rangeSlider = [];
+
+        for(var i = 0; i < $scope.dow.length; i++) {
+            $scope.rangeSlider.push({ 
+                minValue: 5, 
+                maxValue: 21,
+                title: $scope.dow[i],
+                enabled: true,
+                options: {
+                    floor: 0,
+                    disabled: false,
+                    ceil: 23,
+                    step: 1
+                }
+            });    
+        }
+
+        $scope.set_time_enable = function(slider, time_enabled) {
+            slider.options.disabled = !time_enabled;
+        }        
+    });

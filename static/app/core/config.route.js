@@ -47,6 +47,10 @@ angular.module('app')
                 url: '/seller/profile',
                 templateUrl: '/static/app/seller/templates/profile.html'
             })
+            .state('app2.seller-availability', {
+                url: '/seller/availability',
+                templateUrl: '/static/app/seller/templates/availability.html'
+            })
             .state('404', {
                 url: '/404',
                 templateUrl: "/static/app/page-extra/404.html"
