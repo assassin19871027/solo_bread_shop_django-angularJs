@@ -24,7 +24,7 @@
         function i18nConfig($translateProvider) {
 
             $translateProvider.useStaticFilesLoader({
-                prefix: 'assets/i18n/',
+                prefix: '/static/assets/i18n/',
                 suffix: '.json'
             });
 

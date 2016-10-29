@@ -1,28 +1,63 @@
-<div class="row">
-<div class="col-md-offset-2 col-md-8">
-<img ng-src="/static/assets/images/add_photo.png" class="img-responsive">
-<form name="product-form">
-	<input type="file" name="logo">
-	<TEXTAREA placeholder="This is the description" name="description">		
-		This is a description of the product. It is made from high quality ingredients and 
-		delivered fresh to you by the baker.
-	</TEXTAREA>
-	<div>
-		Price Per Unit:
-		Min Units Per Order:
-		Delivery method:
-		<span style="display: block;">Pickup <md-checkbox ng-model="checkbox.cb1" aria-label="Checkbox 1"></md-checkbox></span>
-		<span style="display: block;">Nextday <md-checkbox ng-model="checkbox.cb2" aria-label="Checkbox 1"></md-checkbox></span>
-		<span style="display: block;">1 hour <md-checkbox ng-model="checkbox.cb3" aria-label="Checkbox 1"></md-checkbox></span>
-		<span style="display: block;">2 hour <md-checkbox ng-model="checkbox.cb4" aria-label="Checkbox 1"></md-checkbox></span>
-	</div>
-	<md-button class="md-raised btn-w-md md-primary">Post</md-button><div class="divider divider-xs"></div></form>
-<div>
-    <a ui-wave href="javascript:;" class="btn-icon btn-icon-round btn-icon-sm btn-twitter"><i class="fa fa-twitter"></i></a>
-    <a ui-wave href="javascript:;" class="btn-icon btn-icon-round btn-icon-sm btn-facebook"><i class="fa fa-facebook"></i></a>
-    <a ui-wave href="javascript:;" class="btn-icon btn-icon-round btn-icon-sm btn-pinterest"><i class="fa fa-pinterest"></i></a>
-    <a ui-wave href="javascript:;" class="btn-icon btn-icon-round btn-icon-sm btn-instagram"><i class="fa fa-instagram"></i></a>
-
-</div>
-</div>
-</div>
+<section class="container-fluid with-maxwidth chapter" flow-init flow-file-added="!!{png:1,gif:1,jpg:1,jpeg:1}[$file.getExtension()]" flow-files-submitted="$flow.upload()">
+    <article class="article">
+        <div class="row">
+            <div class="col-md-offset-2 col-md-8">
+                <div class="card card-white">
+                    <div class="card-image text-center" ng-hide="$flow.files.length">
+                        <img ng-src="/static/assets/images/photo_add.png" style="width:150px; margin: 30px 0;">
+                    </div>
+                    <div class="card-image text-center" ng-show="$flow.files.length">
+                        <img flow-img="$flow.files[0]" class="thumbnail" />
+                    </div>
+                    <div class="card-content text-center">
+                        <span class="btn btn-success" ng-hide="$flow.files.length" flow-btn flow-attrs="{accept:'image/*'}">Select image</span>
+                        <span class="btn btn-primary" ng-show="$flow.files.length" flow-btn flow-attrs="{accept:'image/*'}">Change</span>
+                        <span class="btn btn-danger" ng-show="$flow.files.length" ng-click="$flow.cancel()">Remove</span>
+                    </div>
+                    <div class="card-content">
+                        <form name="product-form">
+                            <md-input-container class="md-block">
+                                <label>Description</label>
+                                <textarea ng-model="user.biography" md-maxlength="150" rows="5" md-select-on-focus placeholder="This is the description of the product. e.g) It is made from high quality ingredients and delivered fresh to you by the baker."></textarea>
+                            </md-input-container>
+                            <div>
+                                <div layout-gt-sm="row">
+                                    <md-input-container class="md-block" flex-gt-sm>
+                                        <label>Price Per Unit(in US dollars):</label>
+                                        <input ng-model="user.firstName">
+                                    </md-input-container>
+                                    <md-input-container class="md-block" flex-gt-sm>
+                                        <label>Min Units Per Order: </label>
+                                        <input ng-model="user.firstName">
+                                    </md-input-container>
+                                </div>
+                                <label style="margin-bottom: 15px;">Delivery method:</label>
+                                <span class="delivery-hour-option">Pickup <md-checkbox ng-model="checkbox.cb1" aria-label="Checkbox 1"></md-checkbox></span>
+                                <span class="delivery-hour-option">Nextday <md-checkbox ng-model="checkbox.cb2" aria-label="Checkbox 1"></md-checkbox></span>
+                                <div style="padding: 12px;">
+                                    <md-radio-group class="ui-md-radio-group-inline" ng-model="radio.group1">
+                                        <md-radio-button value="Apple">1 hour</md-radio-button>
+                                        <md-radio-button value="Banana">2 hour</md-radio-button>
+                                    </md-radio-group>
+                                </div>
+                            </div>
+                            <div class="divider divider-xs"></div>
+                            <div class="row text-center">
+                                <!-- <md-button class="md-raised btn-w-md md-primary" ng-click="$flow.resume()">Post</md-button> -->
+                                <a class="btn btn-primary" ng-click="$flow.resume()">POST</a>
+                            </div>
+                            <div class="divider divider-xs"></div>
+                        </form>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-content">
+                            <a ui-wave href="javascript:;" class="btn-icon btn-icon-round btn-icon-sm btn-twitter"><i class="fa fa-twitter"></i></a>
+                            <a ui-wave href="javascript:;" class="btn-icon btn-icon-round btn-icon-sm btn-facebook"><i class="fa fa-facebook"></i></a>
+                            <a ui-wave href="javascript:;" class="btn-icon btn-icon-round btn-icon-sm btn-pinterest"><i class="fa fa-pinterest"></i></a>
+                            <a ui-wave href="javascript:;" class="btn-icon btn-icon-round btn-icon-sm btn-instagram"><i class="fa fa-instagram"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </article>
+</section>

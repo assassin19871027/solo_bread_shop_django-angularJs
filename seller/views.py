@@ -8,6 +8,7 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
 from django.http import JsonResponse
+from django.core.files.storage import FileSystemStorage
 
 from models import Product, Baker
 from rest_framework import viewsets
@@ -159,3 +160,12 @@ def create_token(user):
 def parse_token(req):
     token = req.META.get('Authorization').split()[1]
     return jwt.decode(token, app.config['TOKEN_SECRET'])
+
+
+@csrf_exempt
+def upload_product_photo(request):
+    myfile = request.FILES['file']
+    fs = FileSystemStorage()
+    filename = fs.save(myfile.name, myfile)
+    uploaded_file_url = fs.url(filename)
+    return JsonResponse({'ok': uploaded_file_url})

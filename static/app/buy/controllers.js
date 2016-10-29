@@ -28,7 +28,7 @@ angular.module('buy.controllers', ['buy.services', 'stripe.checkout'])
     ]);
 
 angular.module('app')
-    .controller('CtrlCart', function($scope, Product, $rootScope, cart, StripeCheckout, $log) {
+    .controller('CtrlCart', function($scope, Product, $rootScope, cart, StripeCheckout, $log, toastr) {
         $scope.products = cart.getProducts();
 
         $scope.computeTotal = function() {
@@ -49,7 +49,7 @@ angular.module('app')
         }
 
         var handler = StripeCheckout.configure({
-            name: "Custom Example",
+            name: "GetFreshBaked",
             token: function(token, args) {
                 $log.debug("Got stripe token: " + token.id);
             }
@@ -57,13 +57,13 @@ angular.module('app')
 
         this.doCheckout = function(token, args) {
             var options = {
-                description: "Checkout!",
+                description: "",
                 amount: $scope.computeTotal() * 100
             };
 
             handler.open(options)
                 .then(function(result) {
-                    alert("Got Stripe token: " + result[0].id);
+                    toastr.success('Thank you for your purchase!\nYou are successfully checked out with ' + result[0].id + '!');
                 }, function() {
                     alert("Stripe Checkout closed without making a sale :(");
                 });
