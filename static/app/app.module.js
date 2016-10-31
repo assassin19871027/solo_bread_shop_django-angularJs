@@ -19,13 +19,13 @@
 
         // ,'app.chart'
         // ,'app.table'
-        ,'app.form'
-        ,'app.form.validation'
+        // ,'app.form'
+        // ,'app.form.validation'
         ,'app.page'
 
         // App
-        ,'app.calendar'
-        ,'app.task'
+        // ,'app.calendar'
+        // ,'app.task'
 
         ,'buy.controllers'
         ,'buy.services'
