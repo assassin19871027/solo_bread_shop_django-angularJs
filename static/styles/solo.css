@@ -32,3 +32,24 @@
 	float: right;
 	margin-bottom: 2px;
 }
+
+.md-sidenav-right a {
+	display: block;
+	font-size: 16px;
+	margin: 5px 0 5px 20px;
+}
+
+#right-menu {
+	width: 135px; 
+	height: 170px; 
+	min-width: 120px;
+	padding-top: 20px;
+}
+
+#right-menu a {
+	line-height: 21px;
+}
+
+#right-menu hr {
+	margin: 3px;
+}

@@ -151,6 +151,7 @@ body {
   .app-page-container .app-footer .brand {
     color: rgba(0, 0, 0, 0.87);
     text-transform: uppercase;
+    font-size: 15px;
     letter-spacing: 0.02em; }
   .app-page-container .app-footer .material-icons {
     font-size: 12px;

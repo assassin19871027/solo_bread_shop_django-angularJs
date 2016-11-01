@@ -30,7 +30,8 @@ angular.module('app')
             })
             .state('app2.product-add', {
                 url: '/product/add',
-                templateUrl: '/static/app/buy/templates/product_add.html'
+                templateUrl: '/static/app/buy/templates/product_add.html',
+                data: { requiredLogin: true }
             })
             .state('app2.page-about', {
                 url: '/page/about',
@@ -45,11 +46,13 @@ angular.module('app')
             })
             .state('app2.seller-profile', {
                 url: '/seller/profile',
-                templateUrl: '/static/app/seller/templates/profile.html'
+                templateUrl: '/static/app/seller/templates/profile.html',
+                data: { requiredLogin: true }
             })
             .state('app2.seller-availability', {
                 url: '/seller/availability',
-                templateUrl: '/static/app/seller/templates/availability.html'
+                templateUrl: '/static/app/seller/templates/availability.html',
+                data: { requiredLogin: true }
             })
             .state('404', {
                 url: '/404',
@@ -88,10 +91,22 @@ angular.module('app')
             chunkRetryInterval: 5000,
             simultaneousUploads: 4,
             singleFile: true,
-            testChunks:false
+            testChunks: false
         };
 
         flowFactoryProvider.on('catchAll', function(event) {
             console.log('catchAll', arguments);
         });
-    });
+    }).run(function($rootScope, $state, $auth) {
+        $rootScope.$on('$stateChangeStart',
+            function(event, toState) {
+                var requiredLogin = false;
+                if (toState.data && toState.data.requiredLogin)
+                    requiredLogin = true;
+
+                if (requiredLogin && !$auth.isAuthenticated()) {
+                    event.preventDefault();
+                    $state.go('app2.login');
+                }
+            });
+    });;

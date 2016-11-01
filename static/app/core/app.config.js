@@ -24,7 +24,7 @@
         var date = new Date();
         var year = date.getFullYear();
         var app = {
-            brand: 'Material',
+            brand: 'GetFreshBaked',
             user: 'Jane',
             year: year,
             pageTransition: pageTransitionOpts[0],          // 0, 1, 2, 3... and build your own
@@ -34,7 +34,7 @@
             fixedHeader: true,                              // true, false
             sidebarWidth: 'middle',                         // small, middle, large      
             theme: 'light',                                 // light, gray, dark
-            colorOption: '12',                               // 11,12,13,14,15,16; 21,22,23,24,25,26; 31,32,33,34,35,36
+            colorOption: '31',                               // 11,12,13,14,15,16; 21,22,23,24,25,26; 31,32,33,34,35,36
             link: 'https://themeforest.net/item/material-design-angular-admin-app/17067522'
         };
         var color = {
