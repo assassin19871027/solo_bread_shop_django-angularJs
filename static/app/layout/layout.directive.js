@@ -230,8 +230,8 @@
             var $el = $(el[0]),
                 $body = $('#body'),
                 $search_input = $el.find('#overlay-search-input'),
-                $closeOverlayBtn = $el.find('#overlay-close');
-
+                $closeOverlayBtn = $el.find('#overlay-close'),
+                $searchBtn = $el.find('#search_post');                
 
                 // $timeout(function() {
                 //     // .sidebar-mobile-open is mobile specific, add/remove it on desktop won't have any side effect
@@ -242,7 +242,7 @@
             // open overlay & auto focus input box
             var openOverlay = function () {
                 $body.addClass('overlay-active');
-
+                new google.maps.places.Autocomplete((document.getElementById('id_search_location')), { types: ['geocode'] });
                 // [delay] should >= `visibility` transition duration in CSS, see _overlay.scss, otherwise auto-focus won't work since element is not there
                 $timeout(function() {
                     $search_input.focus();
@@ -266,17 +266,24 @@
                 if ( e.keyCode == 27) { // when ESC is pressed
                     closeOverlay();
                 } else if (e.keyCode == 13) {
-                    $rootScope.keyword = $search_input.val();
-                    $rootScope.$apply();
-                    closeOverlay();
+                    // $rootScope.keyword = $search_input.val();
+                    // $rootScope.$apply();
+                    // closeOverlay();
                 }
             });
 
             $closeOverlayBtn.on('click', function(e) {
                 closeOverlay();
                 e.preventDefault();
-            })
+            });
 
+            $searchBtn.on('click', function(e) {
+                $rootScope.keyword = $search_input.val();
+                // address
+                $rootScope.$apply();
+                closeOverlay();
+                e.preventDefault();
+            });
         } 
     }
 

@@ -145,9 +145,13 @@ MEDIA_ROOT = os.path.join(BASE_DIR, *MEDIA_URL.strip("/").split("/"))
 # For dev
 STRIPE_KEYS = {
     'API_KEY': 'sk_test_1AFSPD5Dg8RihyPPtylWiSsR',
-    'PUBLIC_KEY': 'pk_test_egZpQehcB86xWgcr0n1eZluM',
-    'CLIENT_ID': 'ca_8Qcy5FPjST3HuFl7xXjisiodyjKE5d8V',
+    'PUBLIC_KEY': 'pk_test_Q4RGBzPFhWbMP2daCqMg6Rj7',
+    # 'CLIENT_ID': 'ca_8Qcy5FPjST3HuFl7xXjisiodyjKE5d8V',
 }
+
+# twilio credentials
+TWILIO_ACCOUNT_SID = "ACb311a23eddf63e73d3812c07921b540c" 
+TWILIO_AUTH_TOKEN = "6bf4a906976eb9f31d683dd336be4784" 
 
 TOKEN_SECRET = '098098ug034hg34g934f343o#G#G$#$#$G'
 
@@ -158,3 +162,11 @@ TWITTER_CONSUMER_KEY = 'J6eeF1zgj7CmGGBO5ARPMPbrC'
 TWITTER_CONSUMER_SECRET = 'OMcmHxnOBIR6VdIBshsznk25P6VpWTHfVyQBZ63JMaluGOLbsW'
 TWITTER_CALLBACK_URL = 'http://127.0.0.1:8000/auth/twitter'
 
+EMAIL_HOST = 'email-smtp.us-west-2.amazonaws.com'
+EMAIL_HOST_USER = 'AKIAJQWFUMH5MCIHX52Q' #'ses-smtp-user.20160616-182855'
+EMAIL_HOST_PASSWORD = 'AlETX02PSbQI8a46g7RL/cN7lbzF9sBHbOTag+TUOxxv'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'info@getfreshbaked.com'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

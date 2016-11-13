@@ -1,10 +1,12 @@
 <md-sidenav class="md-sidenav-right md-whiteframe-4dp" md-component-id="right" id="right-menu">
     <div class="md-sidenav-inner" ng-controller="AppSidenavRightCtrl">
         <!-- height must be set in order to make subheader work, "55px" is the height of md-tab-label -->
-        <a href="#/app2/ui/products">> Buy</a>
-        <a href="#/app2/page/about">> About</a>
-        <a href="#/app2/login">> Sell</a>
+        <a href="#/app2/ui/products"><span class="glyphicon glyphicon-shopping-cart"></span> Buy</a>
+        <a href="#/app2/page/about"><span class="glyphicon glyphicon-question-sign"></span> About</a>
+        <a href="#/app2/seller/profile"><span class="glyphicon glyphicon-usd"></span> Sell</a>
         <hr>
-        <a href="#/app2/page/cart">> Checkout</a>
+        <a href="#/app2/page/cart"><span class="glyphicon glyphicon-check"></span> Checkout</a>
+        <hr ng-if="loggedin">
+        <a href ng-click="logout()" ng-show="loggedin"><span class="glyphicon glyphicon-log-out"></span> Logout</a>
     </div>
 </md-sidenav>

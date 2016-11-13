@@ -47,7 +47,13 @@ angular.module('app')
             .state('app2.seller-profile', {
                 url: '/seller/profile',
                 templateUrl: '/static/app/seller/templates/profile.html',
-                data: { requiredLogin: true }
+                data: { requiredLogin: false },
+                params: { pk: 2 }
+            })
+            .state('app2.order-done', {
+                url: '/order/done',
+                templateUrl: '/static/app/buy/templates/order_done.html',
+                params: { order: null }
             })
             .state('app2.seller-availability', {
                 url: '/seller/availability',
@@ -81,7 +87,7 @@ angular.module('app')
         });
 
         StripeCheckoutProvider.defaults({
-            key: "pk_test_egZpQehcB86xWgcr0n1eZluM"
+            key: "pk_test_Q4RGBzPFhWbMP2daCqMg6Rj7"
         });
 
         flowFactoryProvider.defaults = {
@@ -95,11 +101,12 @@ angular.module('app')
         };
 
         flowFactoryProvider.on('catchAll', function(event) {
-            console.log('catchAll', arguments);
+            // console.log('catchAll', arguments);
         });
-    }).run(function($rootScope, $state, $auth) {
+    }).run(function($rootScope, $state, $auth, $mdSidenav) {
         $rootScope.$on('$stateChangeStart',
             function(event, toState) {
+                $mdSidenav('right').close();
                 var requiredLogin = false;
                 if (toState.data && toState.data.requiredLogin)
                     requiredLogin = true;

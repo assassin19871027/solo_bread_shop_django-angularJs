@@ -16,9 +16,11 @@
     display: flex;
 }
 
-.product_tiles img {
+.1product_tiles .img-wrapper {
 	border: 1px;
 	border-style: solid;
+	height: 100%;
+	display: list-item;
 }
 
 .delivery-hour-option {
@@ -40,16 +42,62 @@
 }
 
 #right-menu {
-	width: 135px; 
-	height: 170px; 
+	width: 142px; 
+	height: 200px; 
 	min-width: 120px;
 	padding-top: 20px;
 }
 
 #right-menu a {
-	line-height: 21px;
+	line-height: 25px;
 }
 
 #right-menu hr {
 	margin: 3px;
+}
+
+/* for star rating */
+.rating {
+    color: #a9a9a9;
+    margin: 0;
+    padding: 0;
+}
+ul.rating {
+    display: inline-block;
+}
+.rating li {
+    list-style-type: none;
+    display: inline-block;
+    padding: 1px;
+    text-align: center;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 20px;
+}
+.rating .filled {
+    color: gold;
+}
+.cart-item-attr {
+	margin-bottom: 12px;
+}
+
+.cart-item-title {
+	color: #2196F3;
+}
+
+.md-sidenav-inner a {
+	color: #2196F3;
+}
+
+.pac-container {
+	z-index: 1050;
+}
+
+.app-overlay input.overlay-search-input {
+	font-size: 28px;
+	margin-top: 12px;
+}
+
+#search_post {
+	margin-top: 20px;
 }

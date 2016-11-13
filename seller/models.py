@@ -65,6 +65,7 @@ class Baker(AbstractUser):
     yelp_rating = models.FloatField(blank=True, null=True)
     yelp_comments = models.TextField(blank=True, null=True)
 
+    rate = models.IntegerField(default=0)
     customer_rating = models.FloatField(blank=True, null=True)
     stripe_acct_id = models.CharField(max_length=25)
     objects = UserManager()
@@ -83,7 +84,7 @@ class Product(normal_models.Model):
     # slug = models.SlugField(unique=True, max_length=10)
     name = models.CharField(max_length=100)
     image = models.ImageField(upload_to='products')
-    type = models.CharField(max_length=30)
+    product_type = models.CharField(max_length=30, default='cookie')
 
     unit_price = normal_models.DecimalField(blank=True, null=False, default=00.00, 
                                             decimal_places=2, max_digits=6 ) # price in cents
@@ -96,7 +97,7 @@ class Product(normal_models.Model):
     delivery_fee = models.IntegerField(choices=DELIVERY_FEE, default=0)
     delivery_method = models.IntegerField(choices=DELIVERY_METHOD, default=2)
 
-    hashtags = models.CharField(max_length=50)
+    hashtags = models.CharField(max_length=50, null=True, blank=True)
     ingredients = models.CharField(max_length=500)
     order_fulfilment = models.CharField(max_length=500, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
@@ -108,53 +109,59 @@ class Product(normal_models.Model):
 
     customer_rating = models.FloatField(null=True, blank=True)
     date_created = models.DateTimeField(auto_now_add=True)
+    availability = models.CharField(max_length=100)
     
     class Meta:
         verbose_name_plural = 'Products'
         ordering = ['-date_created'] 
         
     def __str__(self):
-        return '{}-{}'.format(self.baker.business_name, self.name)
+        return '{}-{}'.format(self.baker.username, self.name)
         
-    # def get_absolute_url(self):
-    #     return reverse('products:view', kwargs={'slug': self.slug})
+    def save(self, **kwargs):
+        min_order_amount = self.unit_price * self.min_order_unit * 100
+        super(Product, self).save()        
 
 
 class BakerComment(normal_models.Model):
     baker = models.ForeignKey(Baker)
-    created_at = models.DateTimeField()
+    created_at = models.DateTimeField(auto_now_add=True)
     text = models.TextField()
+    customer_name = models.CharField(max_length=100)
+    customer_email = models.EmailField()
 
     def __str__(self):
-        return self.baker.business_name
+        return "{} - {}".format(self.customer_name, self.baker.business_name)
 
 
 class ProductComment(normal_models.Model):
     product = models.ForeignKey(Product)
-    created_at = models.DateTimeField()
+    created_at = models.DateTimeField(auto_now_add=True)
     text = models.TextField()
+    customer_name = models.CharField(max_length=100)
+    customer_email = models.EmailField()
 
     def __str__(self):
-        return self.product.name
+        return "{} - {}".format(self.customer_name, self.product.name)
 
 
 class Sale(normal_models.Model):
-    baker = models.ForeignKey(Baker)
+    product = models.ForeignKey(Product)
     customer = models.CharField(max_length=100)
-    session = models.CharField(max_length=100)
-    created_at = models.DateTimeField()
-    lat = models.FloatField()
-    lon = models.FloatField()
-    traffic_source = models.CharField(max_length=100)
-    first_visit_date = models.DateTimeField()
-    visits_prior_checkout = models.IntegerField()
-    avarage_time_on_pages = models.FloatField()
+    session = models.CharField(max_length=100, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    lat = models.FloatField(default=0.0)
+    lon = models.FloatField(default=0.0)
+    traffic_source = models.CharField(max_length=100, null=True, blank=True)
+    first_visit_date = models.DateTimeField(null=True, blank=True)
+    visits_prior_checkout = models.IntegerField(default=0)
+    avarage_time_on_pages = models.FloatField(default=0.0)
     email = models.EmailField()
     phone = models.CharField(max_length=30)
-    delivery_address = models.CharField(max_length=100)
-    likes = models.TextField()
-    shares = models.TextField()
-    comments = models.TextField()
+    delivery_address = models.CharField(max_length=200)
+    likes = models.TextField(null=True, blank=True)
+    shares = models.TextField(null=True, blank=True)
+    comments = models.TextField(null=True, blank=True)
 
     def __str__(self):
         return '{} {}'.format(self.baker.business_name, self.created_at)

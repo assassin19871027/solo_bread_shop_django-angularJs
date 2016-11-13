@@ -10,26 +10,48 @@ from django.conf import settings
 from django.http import JsonResponse
 from django.core.files.storage import FileSystemStorage
 from django.conf import settings
+from django.core.mail import send_mail
+from rest_framework.response import Response
+from twilio.rest import TwilioRestClient 
 
-from models import Product, Baker
+from models import *
 from rest_framework import viewsets
 from serializers import ProductSerializer, SellerSerializer
 
 
 class ProductViewSet(viewsets.ModelViewSet):
-	"""
-	API endpoint that allows products to viewed or edited.
-	"""
-	queryset = Product.objects.all().order_by('-date_created')
-	serializer_class = ProductSerializer
+    """
+    API endpoint that allows products to viewed or edited.
+    """
+    queryset = Product.objects.all().order_by('-date_created')
+    serializer_class = ProductSerializer
 
+    def create(self, request, *args, **kwargs):
+        data = request.data.copy()
+        data['baker_id'] = parse_token(request)['sub']
+        data['image'] = 'products/' + data['image']
+        # print data, '@@@@@@'
+        serializer = self.get_serializer(data=data)
+        serializer.is_valid(raise_exception=True)
+        product = Product(**data)
+        product.save()
+        # headers = self.get_success_headers(serializer.data)
+        return JsonResponse('success', status=201, safe=False)
 
 class SellerViewSet(viewsets.ModelViewSet):
-	"""
-	API endpoint for sellers
-	"""
-	queryset = Baker.objects.all()
-	serializer_class = SellerSerializer
+    """
+    API endpoint for sellers
+    """
+    queryset = Baker.objects.all()
+    serializer_class = SellerSerializer
+
+    def retrieve(self, request, pk=None):
+        parsed_token = parse_token(request)
+        pk = parsed_token['sub'] if parsed_token else pk
+        baker = Baker.objects.get(pk=pk)
+        serializer = SellerSerializer(baker)
+        return Response(serializer.data)
+
 
 def facebook():
     access_token_url = 'https://graph.facebook.com/v2.5/oauth/access_token'
@@ -137,8 +159,7 @@ def stripe_(request):
     user = Baker(logo=profile['business_logo'], 
                  business_name=profile['business_name'], 
                  url_business_website=profile['business_url'],
-                 first_name=profile['display_name'].split('.')[0],
-                 last_name=profile['display_name'].split('.')[1],
+                 business_contact_name=profile['display_name'],
                  username=profile['email'].split('@')[0],
                  email=profile['email'],
                  stripe_acct_id=profile['id'])
@@ -159,8 +180,9 @@ def create_token(user):
 
 
 def parse_token(req):
-    token = req.META.get('Authorization').split()[1]
-    return jwt.decode(token, app.config['TOKEN_SECRET'])
+    if req.META.get('HTTP_AUTHORIZATION'):
+        token = req.META.get('HTTP_AUTHORIZATION').split()[1]
+        return jwt.decode(token, settings.TOKEN_SECRET)
 
 
 @csrf_exempt
@@ -170,4 +192,102 @@ def upload_product_photo(request):
     fs = FileSystemStorage(location=location)
     filename = fs.save(myfile.name, myfile)
     uploaded_file_url = fs.url(filename)
-    return JsonResponse({'ok': location+filename})
+    return JsonResponse({'ok': 'products/'+filename})
+
+
+@csrf_exempt
+def charge(request):
+    print request.body
+    params = json.loads(request.body)
+    stripe.api_key = settings.STRIPE_KEYS['API_KEY']
+
+    total_price = 0
+    for product in params['products']:
+        price_in_cents = float(product['unit_price']) * float(product['quantity']) * 100
+        tax = product['delivery_fee'] * 100
+        total_price += int(price_in_cents + tax)
+
+    # charge to app
+    total_charge = stripe.Charge.create(
+        amount=total_price,
+        currency="usd",
+        source=params['token'],
+        description='Thank you for your purchase!'
+    )
+
+    for product in []:#params['products']:
+        baker = Baker.objects.get(id=product['baker_id'])
+        price_in_cents = float(product['unit_price']) * float(product['quantity']) * 100
+        tax = product['delivery_fee'] * 100
+        
+        # send division to each baker
+        transfer = stripe.Transfer.create(
+            amount=int(price_in_cents+tax),
+            currency="usd",
+            destination=baker.stripe_acct_id,
+            application_fee = int(price_in_cents * 0.05),
+            description='Thank you for your purchase!'
+        )        
+
+        sale = Sale()
+        sale.baker = baker
+        sale.delivery_address = params['address']
+        sale.customer = params['username']
+        sale.phone = params['phone']
+        sale.email = params['email']
+        sale.charge_id = transfer.id
+        sale.save()
+
+        # send email
+        email_subject = 'Order Confirmation'
+        email_body = "Dear %s.\n\nYou've got an order from Customer: %s \nAddress: %s\nPhone Number: %s\nProduct: %s\nQuantity: %.2f\nPlease confirm the order and fulfill it.\n\nThank you." % (baker.business_name, sale.customer, sale.delivery_address, sale.phone, product['name'], product['quantity'])
+
+        send_mail(email_subject, email_body, settings.DEFAULT_FROM_EMAIL, [baker.email], fail_silently=False)
+        send_SMS(baker.business_cell_phone)
+
+    return JsonResponse({'status': 'success'})
+
+
+def send_SMS(phone_number):
+    '''
+    send SMS to the baker to confirm the order using twillio
+    '''
+    client = TwilioRestClient(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN) 
+     
+    client.messages.create(
+        to='+1'+phone_number, 
+        from_="+18582473889", 
+        body="You have a new order from GetFreshBaked. Please check your email and confirm with the buyer.",  
+    )   
+
+
+@csrf_exempt
+def comment(request):
+    print request.body
+    params = json.loads(request.body)
+    type_ = params['type']
+
+    if type_ == 'product':
+        product = Product.objects.get(id=params['item'])
+        product.num_likes = params['rate']
+        product.save()
+
+        params['product_id'] = params['item']
+        params.pop('item', None)
+        params.pop('type', None)
+        params.pop('rate', None)
+        comment = ProductComment(**params)
+        comment.save()
+    else:
+        baker = Baker.objects.get(id=params['item'])
+        baker.rate = params['rate']
+        baker.save()
+
+        params['baker_id'] = params['item']
+        params.pop('item', None)
+        params.pop('type', None)
+        params.pop('rate', None)
+        comment = BakerComment(**params)
+        comment.save()
+
+    return JsonResponse({'status': 'ok'})

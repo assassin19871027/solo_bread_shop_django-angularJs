@@ -16,15 +16,23 @@
                             <div>License Number: <span class="pull-right">{{ seller.license_number }}</span></div>
                             <div>Description:</div>
                             <div>{{ seller.business_description }}</div>
-                        </div>
-                        <div class="col-xs-6">
                             <div>{{ seller.business_phone }}</div>
                             <div>{{ seller.business_email }}</div>
+                            <a href="#/app2/seller/availability" class="btn btn-w-md btn-primary" style="margin-top: 15px;">Set Availability</a>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <h3 style="margin-left: 15px;"> Products </h3>
                         </div>
                     </div>
                     <div class="row product_tiles">
+                        <div class="clearfix"></div>
                         <div class="col-xs-4" ng-repeat="product in seller.products">
-                            <img class="img-responsive" ng-src="{{ product.image }}">
+                            <div class="img-wrapper">
+                                <img class="img-responsive" ng-src="{{ product.image }}">
+                            </div>
                         </div>
                         <div class="col-xs-4 text-center" style="border: 1px;">
                             <a href="#/app2/product/add" style="margin: 0 auto;">

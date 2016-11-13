@@ -1,27 +1,68 @@
 <section class="container-fluid with-maxwidth chapter" ng-controller="CtrlCart as ctrl">
 
     <article class="article">
-    <div class="card card-white">
+    <div class="card card-white" style="font-size: 16px;">
         <div ng-repeat="product in products" class="card-content row">
-            <div class="col-xs-6">
+            <div class="col-xs-offset-1 col-xs-10">
+                <h4>{{ $index+1 }}.{{ product.name }}</h4>
                 <img ng-src="{{ product.image }}" class="img-responsive thumbnail">
-            </div>
-            <div class="col-xs-6">
-                <h4>{{ product.name }}</h4>
-                <div>Baker: <span class="pull-right">{{ product.baker_name }}</span></div>
-                <div>Quantity: <span class="pull-right">{{ product.quantity }}</span></div>
-                <div>Unit Price: <span class="pull-right">{{ product.unit_price | currency }}</span></div>
-                <div>Price: <span class="pull-right">{{ product.quantity * product.unit_price | currency }}</span></div>            
+                <div class="cart-item-attr" style="font-weight: 500;">
+                    <span class="cart-item-title">Baker:</span> <span class="pull-right">{{ product.baker_name }}</span>
+                </div>
+                <div class="cart-item-attr">
+                    <span class="cart-item-title">Unit Price:</span> <span class="pull-right">{{ product.unit_price | currency }}</span>
+                </div>
+                <div class="cart-item-attr">
+                    <span class="cart-item-title">Quantity:</span> 
+                    <div class="col-xs-12 no-padding" style="margin-bottom: 12px;">
+                    <div style="display: flex; margin-top: 12px; float: left">
+                        <i class="material-icons" ng-click="decrease_quantity(product)">remove</i>
+                        <input type="number" ng-model="product.quantity" style="display: inline; width: 46px; text-align: center; margin: 0 7px;">
+                        <i class="material-icons" ng-click="increase_quantity(product)">add</i>
+                    </div>
+                    <button class="btn btn-danger btn-sm pull-right" style="margin-top:8px;" ng-click="remove_product(product)"> Remove</button>
+                    </div>
+                </div>
+                <div class="cart-item-attr">
+                    <span class="cart-item-title">Delivery fee:</span> <span class="pull-right">{{ product.delivery_fee | currency }}</span>
+                </div>                
+                <div class="cart-item-attr">
+                    <span class="cart-item-title">Sub Total:</span> <span class="pull-right">{{ product.quantity * product.unit_price + product.delivery_fee | currency }}</span>
+                </div>     
             </div>
         </div>
         <div class="card-content row">
-            <div class="col-xs-offset-2 col-xs-7">
+            <div class="col-xs-offset-1 col-xs-7">
                 <div>Delivery: {{ computeDeliveryFee() | currency }}</div>
                 <div><h5>Total: {{ computeTotal() | currency }}</h5></div>
             </div>
         </div>
-        <div class="card-action bg-primary" style="text-align: center;">
-            <a href ng-click="ctrl.doCheckout()">Checkout</a>
+        <hr></hr>
+        <div class="card-content row">
+            <div class="col-xs-offset-1 col-xs-10" style="font-size: 14px;">
+            <h4 style="color: #3F51B5; margin-bottom: 24px;">Contact Information </h4>
+            <form name="contact_form" ng-submit="ctrl.doCheckout(contact_form.$valid)">
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>Customer Name</label>
+                    <input ng-model="contact.username" required="">
+                </md-input-container>
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>Delivery Address</label>
+                    <input ng-model="address_" required="" id="delivery_address" placeholder="">
+                </md-input-container>
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>Email</label>
+                    <input ng-model="contact.email" required="" type="email">
+                </md-input-container>
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>Phone number</label>
+                    <input ng-model="contact.phone" required="" type="number">
+                </md-input-container>
+                <div class="card-action bg-primary" style="text-align: center;">
+                    <button class="btn-link" type="submit" style="color: white;">CHECKOUT</button>
+                </div>
+            </form>        
+            </div>
         </div>
     </div>        
     </article>    

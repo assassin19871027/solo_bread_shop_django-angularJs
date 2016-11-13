@@ -6,7 +6,7 @@
         .controller('SidenavRightCtrl', ['$scope', '$mdSidenav', SidenavRightCtrl])
     
     function AppCtrl($scope, $rootScope, $document, appConfig, $state, $mdSidenav, $mdComponentRegistry) {
-
+        // new google.maps.places.Autocomplete((document.getElementById('id_search_location')), { types: ['geocode'] });
         $scope.pageTransitionOpts = appConfig.pageTransitionOpts;
         $scope.app = appConfig.app;
         $scope.color = appConfig.color;

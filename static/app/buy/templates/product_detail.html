@@ -5,7 +5,7 @@
             <div class="col-md-4"  style="padding: 20px;">
                 <div class="card card-white">
                     <div class="card-header">
-                        <img ng-src="{{ selected_product.baker_logo }}" class="baker-avatar">
+                        <a ui-sref="app2.seller-profile({pk: selected_product.baker_id})"><img ng-src="{{ selected_product.baker_logo }}" class="baker-avatar"></a>
                         <span class="card-title">{{ selected_product.baker_name }}</span>
                     </div>
                     <div class="card-content bg-warning">

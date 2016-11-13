@@ -1,21 +1,32 @@
 <section class="app-overlay" search-overlay>
     <div class="app-overlay-inner">
         <div class="overlay-header">
-            <h2><span data-translate="SEARCH"></span></h2>
+            <!-- <h2><span data-translate="SEARCH"></span></h2> -->
             <a href="" id="overlay-close" class="overlay-close">
                 <i class="material-icons">close</i>
             </a>
         </div>
-        <div class="overlay-content">
-            <input id="overlay-search-input"
-                   class="overlay-search-input" 
-                   placeholder="{{ 'SEARCH' | translate }}..."
-                   ng-model="keyword"
-                   >
+        <div class="row">
+          <div class="col-md-3" >
+            <md-input-container class="md-block" flex-gt-sm>
+                <label style="font-size: 18px;">Keyword</label>
+                <input ng-model="keyword" id="overlay-search-input">
+            </md-input-container>
+            <md-input-container class="md-block" flex-gt-sm>
+                <label style="font-size: 18px;">Destination Address</label>
+                <input id="id_search_location" placeholder=" ">
+            </md-input-container>
+            <label style="margin-bottom: 15px;">Ingredients:</label>
+            <div class="clearfix"></div>
+            <div class="col-xs-6 no-padding">Gluten free <md-checkbox ng-model="checkbox.cb1" aria-label="Checkbox 1" style="float: right; margin-right: 8px;"></md-checkbox></div>
+            <div class="col-xs-6 no-padding">Dairy free <md-checkbox ng-model="checkbox.cb2" aria-label="Checkbox 1" style="float: right; margin-right: 8px;"></md-checkbox></div>
+            <div class="col-xs-6 no-padding">Vegan <md-checkbox ng-model="checkbox.cb3" aria-label="Checkbox 1" style="float: right; margin-right: 8px;"></md-checkbox></div>
+            <div class="col-xs-6 no-padding">Organic <md-checkbox ng-model="checkbox.cb4" aria-label="Checkbox 1" style="float: right; margin-right: 8px;"></md-checkbox></div>
+            <div class="col-xs-6 no-padding">Nut free <md-checkbox ng-model="checkbox.cb5" aria-label="Checkbox 1" style="float: right; margin-right: 8px;"></md-checkbox></div>
+            <div class="col-xs-6 no-padding">Sugar free <md-checkbox ng-model="checkbox.cb6" aria-label="Checkbox 1" style="float: right; margin-right: 8px;"></md-checkbox></div>
+            <md-button class="md-raised btn-w-md md-primary" id="search_post">Search</md-button>
 
-            <div class="text-small text-muted">
-                <span>Press <em>Esc</em> key to dismiss or <em>Enter</em> key to search</span>
-            </div>
+          </div>
         </div>
     </div>
 </section>

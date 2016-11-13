@@ -13,6 +13,7 @@ angular.module("cart", [])
                 }
                 if (!addedToExistingItem) {
                     product.quantity = product.min_order_unit;
+                    product.delivery_fee = (Math.random() * 5).toFixed(2) * 1;
                     cartData.push(product);
                 }
             },

@@ -2,6 +2,25 @@
 
     <article class="article">
         <div class="row">
+            <div class="col-md-4" style="display: none;">
+                <div class="card card-white">
+                    <div class="card-content">
+                        <div class="card-title">Your current position</div>
+                    </div>
+                    <div class="card-content">
+                        <div>
+                            Addr: {{ geoinfo.postal.code }}, {{ geoinfo.city.names.en}}, {{ geoinfo.country.names.en }}
+                        </div>
+                        <div>
+                            Timezone: {{ geoinfo.location.time_zone }}
+                        </div>
+                        <div style="margin-bottom: 20px;">
+                            Location: {{ geoinfo.location.latitude }}, {{ geoinfo.location.longitude }}
+                        </div>
+                        <div id="map" style="height: 240px;"></div>
+                    </div>
+                </div>
+            </div>
             <div class="col-md-4" ng-repeat="product in products.results | filter:productFilterFn" style="padding: 20px;">
                 <div class="card card-white">
                     <div class="card-image" ng-click="show_detail(product)">
@@ -9,8 +28,8 @@
                         <span class="card-title">{{ product.name }}</span>
                     </div>
                     <div class="card-action">
-                        <a href="javascript:;">Likes</a>
-                        <a href="javascript:;" class="color-primary pull-right">Share</a>
+                        <div star-rating rating-value="product.num_likes" max="5" interactive=false style="display: inline;"></div>
+                        <a href="javascript:;" class="color-primary pull-right" style="padding-top: 3px;">Share</a>
                     </div>
                     <div class="card-content">
                         {{ product.description }}
