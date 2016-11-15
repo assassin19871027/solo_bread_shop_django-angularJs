@@ -11,27 +11,30 @@
 
                         <br><br><h5 style="color: #2196F3;">Leave comment</h5>
                         <div class="col-md-4" ng-repeat="product in order.products">                        
-                        <form name="product-form" ng-submit="post_product();" ng-if="!product.commented">
-                            <h6 ><b>Product: {{ product.name}}</b></h6>
-                            <div style="margin-bottom: 30px;">Rate:<div star-rating rating-value="product.rate" max="5" interactive=true style="display: inline; margin: 2px 0 0 12px;"></div> </div>
-                            <md-input-container class="md-block">
-                                <label>Comment</label>
-                                <textarea ng-model="product.comment" md-maxlength="150" rows="5" md-select-on-focus placeholder="Comment for product" required=""></textarea>
-                            </md-input-container>
-                            <a class="btn-md md-primary md-button md-ink-ripple" style="margin-top: 2px;margin-bottom: 42px;">Share</a>
-                            <a class="md-raised btn-xs md-primary md-button md-ink-ripple pull-right" style="min-height: 25px;padding-top: 4px;" ng-disabled="!product.rate || !product.comment" ng-click="product_comment(product, 1)">Post</a>
-                        </form>  
-                        <div ng-if="product.commented">Your comment is successfully submited.</div>            
-                        <form name="baker-form" ng-submit="post_product();">
-                            <h6 ><b>Baker: {{ product.baker_name}}</b></h6>
-                            <div style="margin-bottom: 30px;">Rate:<div star-rating rating-value="product.baker_rate" max="5" interactive=true style="display: inline; margin: 2px 0 0 12px;"></div> </div>
-                            <md-input-container class="md-block">
-                                <label>Comment</label>
-                                <textarea ng-model="product.baker_comment" md-maxlength="150" rows="5" md-select-on-focus placeholder="Comment for baker" required=""></textarea>
-                            </md-input-container>
-                            <a class="btn-md md-primary md-button md-ink-ripple" style="margin-top: 2px;margin-bottom: 42px;">Share</a>
-                            <a class="md-raised btn-xs md-primary md-button md-ink-ripple pull-right" style="min-height: 25px;padding-top: 4px;" ng-disabled="!product.baker_rate || !product.baker_comment" ng-click="product_comment(product, 2)">Post</a>
-                        </form>              
+                            <form name="product-form" ng-submit="post_product();" ng-if="!product.commented">
+                                <h6 ><b>Product: {{ product.name}}</b></h6>
+                                <div style="margin-bottom: 30px;">Rate:<div star-rating rating-value="product.rate" max="5" interactive=true style="display: inline; margin: 2px 0 0 12px;"></div> </div>
+                                <md-input-container class="md-block">
+                                    <label>Comment</label>
+                                    <textarea ng-model="product.comment" md-maxlength="150" rows="5" md-select-on-focus placeholder="Comment for product" required=""></textarea>
+                                </md-input-container>
+                                <a class="btn-md md-primary md-button md-ink-ripple" style="margin-top: 2px;margin-bottom: 42px;">Share</a>
+                                <a class="md-raised btn-xs md-primary md-button md-ink-ripple pull-right" style="min-height: 25px;padding-top: 4px;" ng-disabled="!product.rate || !product.comment" ng-click="product_comment(product, 1)">Post</a>
+                            </form>  
+                            <div ng-if="product.commented">Your comment is successfully submited.</div>        
+                        </div>
+                        <div class="col-md-4" ng-repeat="product in order.products">                        
+                            <form name="baker-form" ng-submit="post_product();" ng-if="product.baker_commented==0">
+                                <h6 ><b>Baker: {{ product.baker_name}}</b></h6>
+                                <div style="margin-bottom: 30px;">Rate:<div star-rating rating-value="product.baker_rate" max="5" interactive=true style="display: inline; margin: 2px 0 0 12px;"></div> </div>
+                                <md-input-container class="md-block">
+                                    <label>Comment</label>
+                                    <textarea ng-model="product.baker_comment" md-maxlength="150" rows="5" md-select-on-focus placeholder="Comment for baker" required=""></textarea>
+                                </md-input-container>
+                                <a class="btn-md md-primary md-button md-ink-ripple" style="margin-top: 2px;margin-bottom: 42px;">Share</a>
+                                <a class="md-raised btn-xs md-primary md-button md-ink-ripple pull-right" style="min-height: 25px;padding-top: 4px;" ng-disabled="!product.baker_rate || !product.baker_comment" ng-click="product_comment(product, 2)">Post</a>
+                            </form>              
+                            <div ng-if="product.baker_commented==1">Your comment is successfully submited.</div>            
                         </div>          
                     </div>
                 </div>            

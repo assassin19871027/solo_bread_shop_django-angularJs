@@ -159,7 +159,7 @@ angular.module('app')
         }
 
         $scope.contact = {};
-        $scope.autocomplete = new google.maps.places.Autocomplete((document.getElementById('delivery_address')), { types: ['geocode'] });
+        new google.maps.places.Autocomplete((document.getElementById('delivery_address')), { types: ['geocode'] });
 
         $scope.decrease_quantity = function(product) {
             if (product.quantity -1 >= product.min_order_unit)
@@ -228,13 +228,22 @@ angular.module('app')
     })
     .controller('CtrlOrderDone', function($scope, cart, $stateParams, $http, toastr) {
         $scope.order = $stateParams.order;
-        $scope.order = {"username": "Thmos", "phone": 234234, "token": "tok_19F95dFsevkGFSwEZh2UEB6J", "products": [{"image": "http://localhost:8000/static/media/products/2.jpg", "hashtags": null, "delivery_fee": 1.54, "order_fulfilment": null, "num_likes": 0, "id": 7, "num_orders": 0, "ingredients": "nut", "baker_logo": "/static/media/bakers/231.jpeg", "num_views": 0, "unit_price": "4.55", "min_order_unit": 12, "delivery_service": 0, "customer_rating": null, "description": "Traditional cookie", "num_shares": 0, "min_order_amount": "1.00", "name": "Trad Cookie", "baker_name": "Bear", "delivery_method": 2, "baker_id": 2, "date_created": "2016-11-12T03:42:40.666310Z", "quantity": 12}, {"image": "http://localhost:8000/static/media/products/1.jpg", "hashtags": "cok", "delivery_fee": 3.82, "order_fulfilment": null, "num_likes": 0, "id": 6, "num_orders": 0, "ingredients": "cocoa", "baker_logo": "/static/media/bakers/231.jpeg", "num_views": 0, "unit_price": "3.33", "min_order_unit": 10, "delivery_service": 0, "customer_rating": null, "description": "Nice yellow cookie", "num_shares": 0, "min_order_amount": "1.00", "name": "yellow cookie", "baker_name": "Bear", "delivery_method": 2, "baker_id": 2, "date_created": "2016-11-12T03:42:01.345606Z", "quantity": 10}], "address": "234 Huntington Avenue, Boston, MA, United States", "email": "ad@min.com"};
+        // store distinct bakers to be commented
+        $scope.comment_bakers = [];
+
+        // $scope.order = {"username": "Thmos", "phone": 234234, "token": "tok_19F95dFsevkGFSwEZh2UEB6J", "products": [{"image": "http://localhost:8000/static/media/products/2.jpg", "hashtags": null, "delivery_fee": 1.54, "order_fulfilment": null, "num_likes": 0, "id": 7, "num_orders": 0, "ingredients": "nut", "baker_logo": "/static/media/bakers/231.jpeg", "num_views": 0, "unit_price": "4.55", "min_order_unit": 12, "delivery_service": 0, "customer_rating": null, "description": "Traditional cookie", "num_shares": 0, "min_order_amount": "1.00", "name": "Trad Cookie", "baker_name": "Bear", "delivery_method": 2, "baker_id": 2, "date_created": "2016-11-12T03:42:40.666310Z", "quantity": 12}, {"image": "http://localhost:8000/static/media/products/1.jpg", "hashtags": "cok", "delivery_fee": 3.82, "order_fulfilment": null, "num_likes": 0, "id": 6, "num_orders": 0, "ingredients": "cocoa", "baker_logo": "/static/media/bakers/231.jpeg", "num_views": 0, "unit_price": "3.33", "min_order_unit": 10, "delivery_service": 0, "customer_rating": null, "description": "Nice yellow cookie", "num_shares": 0, "min_order_amount": "1.00", "name": "yellow cookie", "baker_name": "Bear", "delivery_method": 2, "baker_id": 2, "date_created": "2016-11-12T03:42:01.345606Z", "quantity": 10}], "address": "234 Huntington Avenue, Boston, MA, United States", "email": "ad@min.com"};
 
         for(var i=0; i < $scope.order.products.length; i++) {
-            $scope.order.products[i].rate = 0;
-            $scope.order.products[i].baker_rate = 0;
+            $scope.order.products[i].rate = -1;
+            $scope.order.products[i].baker_rate = -1;
             $scope.order.products[i].commented = false;
-            $scope.order.products[i].baker_commented = false;
+
+            if ($scope.comment_bakers.indexOf($scope.order.products[i].baker_id) == -1) {
+                $scope.comment_bakers.push($scope.order.products[i].baker_id);
+                $scope.order.products[i].baker_commented = 0;   // pristine
+            } else {
+                $scope.order.products[i].baker_commented = 2;   // already displayed
+            }
         }
 
         $scope.product_comment = function(product, type) {
@@ -254,13 +263,11 @@ angular.module('app')
                 data.rate = product.baker_rate;
             }
 
-            console.log(data);
-
             $http.post('/comment/', data).then(function(res){
                 if (type == 1)
                     product.commented = true;
                 else 
-                    product.baker_commented = true;
+                    product.baker_commented = 1;                // commented
             },
             function(res) {
                 toastr.error("Something is wrong! Please try again!");
