@@ -1,5 +1,5 @@
-angular.module('seller.controllers', ['buy.services'])
-    .controller('CtrlSellerDetail', function($scope, Seller, $rootScope, $stateParams) {
+angular.module('seller.controllers', ['buy.services', 'rzModule'])
+    .controller('CtrlSellerDetail', function($scope, Seller, $state, $rootScope, $stateParams) {
         $scope.seller = Seller.query({ pk: $stateParams.pk });
     })
     .controller('LoginCtrl', function($scope, $location, $auth, toastr, $rootScope) {
@@ -22,10 +22,23 @@ angular.module('seller.controllers', ['buy.services'])
                 }
             });
         };
+    })
+    .controller('CtrlSeller', function($scope, Seller, $http, $state, toastr) {
+
+        $scope.seller = {}
+
+        $scope.$on('flow::fileAdded', function (event, $flow, flowFile) {
+            $scope.seller.image = flowFile.name;
+        });
+
+        $scope.post_seller = function(seller) {
+            
+        }
     });
 
+
 angular.module('app')
-    .controller('CtrlSellerAvailability', function($scope, Product, $rootScope, cart, StripeCheckout, $log, toastr) {
+    .controller('CtrlSellerAvailability', function($scope,Seller, Product, $rootScope, cart, StripeCheckout, $log, toastr) {
         $scope.dow = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
         $scope.rangeSlider = [];
 

@@ -91,7 +91,8 @@ WSGI_APPLICATION = 'solo2.wsgi.application'
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.contrib.gis.db.backends.postgis",
+        # "ENGINE": "django.contrib.gis.db.backends.postgis",
+        "ENGINE": "django.db.backends.postgresql",
         "NAME": "solo2",
         "USER": "postgres",
         "PASSWORD": "pbn6h9E",

@@ -107,7 +107,6 @@ def facebook():
     token = create_token(u)
     return json.dumps(token=token)
 
-
 @csrf_exempt
 def stripe_(request):
     access_token_url = 'https://connect.stripe.com/oauth/token'
@@ -167,6 +166,7 @@ def stripe_(request):
     user.save()
     token = create_token(user)
     return JsonResponse({'token': token})
+
 
 
 def create_token(user):

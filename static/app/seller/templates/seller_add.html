@@ -1,0 +1,55 @@
+<section ng-controller="CtrlSeller" class="container-fluid with-maxwidth chapter" flow-init flow-file-added="!!{png:1,gif:1,jpg:1,jpeg:1}[$file.getExtension()]" flow-files-submitted="$flow.upload()">
+<article class="article">
+    <div class="row">
+        <div class="col-md-offset-2 col-md-8">
+            <div class="card card-white">
+                <div class="card-image text-center" ng-hide="$flow.files.length">
+                    <img ng-src="/static/assets/images/photo_add.png" style="width:150px; margin: 30px 0;">
+                </div>
+                <div class="card-image text-center" ng-show="$flow.files.length">
+                    <img flow-img="$flow.files[0]" class="thumbnail" />
+                </div>
+                <div class="card-content text-center">
+                    <span class="btn btn-success" ng-hide="$flow.files.length" flow-btn flow-attrs="{accept:'image/*'}">Select logo</span>
+                    <span class="btn btn-primary" ng-show="$flow.files.length" flow-btn flow-attrs="{accept:'image/*'}">Change</span>
+                    <span class="btn btn-danger" ng-show="$flow.files.length" ng-click="$flow.cancel()">Remove</span>
+                </div>
+
+                <div class="card-content">
+                    <form name="seller-form" ng-submit="post_seller();">
+                        <md-input-container class="md-block" flex-gt-sm>
+                            <label>Business Name</label>
+                            <input ng-model="seller.name" required="">
+                        </md-input-container>
+                        <md-input-container class="md-block" flex-gt-sm>
+                            <label>Business Owner Name</label>
+                            <input ng-model="seller.name" required="">
+                        </md-input-container>
+                        <md-input-container class="md-block" flex-gt-sm>
+                            <label>Business Address</label>
+                            <input ng-model="seller.name" required="">
+                        </md-input-container>
+                        <md-input-container class="md-block" flex-gt-sm>
+                            <label>Business Phone</label>
+                            <input ng-model="seller.name" required="">
+                        </md-input-container>
+                        <md-input-container class="md-block" flex-gt-sm>
+                            <label>Business Cell Phone</label>
+                            <input ng-model="seller.name" required="">
+                        </md-input-container>
+                        <md-input-container class="md-block" flex-gt-sm>
+                            <label>Business Email</label>
+                            <input ng-model="seller.name" required="">
+                        </md-input-container>
+                        <md-input-container class="md-block" flex-gt-sm>
+                            <label>Business Owner Email</label>
+                            <input ng-model="seller.name" required="">
+                        </md-input-container>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</article>
+</section>

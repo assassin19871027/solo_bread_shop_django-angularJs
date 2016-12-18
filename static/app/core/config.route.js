@@ -33,6 +33,10 @@ angular.module('app')
                 templateUrl: '/static/app/buy/templates/product_add.html',
                 data: { requiredLogin: true }
             })
+            .state('app2.seller-add', {
+                url: '/seller/add',
+                templateUrl: '/static/app/seller/templates/seller_add.html'
+            })
             .state('app2.page-about', {
                 url: '/page/about',
                 templateUrl: '/static/app/page/about.html'

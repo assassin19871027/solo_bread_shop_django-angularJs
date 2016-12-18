@@ -1,7 +1,8 @@
 from __future__ import unicode_literals
 
-from django.contrib.gis.db import models
-from django.contrib.gis import geos
+# from django.contrib.gis.db import models
+# from django.contrib.gis import geos
+from django.db import models
 from django.db import models as normal_models
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
