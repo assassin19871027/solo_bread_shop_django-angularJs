@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 	'rest_framework',
     'rest_framework_swagger',
-	'seller'
+	'seller.apps.SellerConfig',
 ]
 
 
@@ -151,8 +151,8 @@ STRIPE_KEYS = {
 }
 
 # twilio credentials
-TWILIO_ACCOUNT_SID = "ACb311a23eddf63e73d3812c07921b540c" 
-TWILIO_AUTH_TOKEN = "6bf4a906976eb9f31d683dd336be4784" 
+TWILIO_ACCOUNT_SID = "ACb311a23eddf63e73d3812c07921b540c"
+TWILIO_AUTH_TOKEN = "6bf4a906976eb9f31d683dd336be4784"
 
 TOKEN_SECRET = '098098ug034hg34g934f343o#G#G$#$#$G'
 
@@ -171,3 +171,5 @@ EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'info@getfreshbaked.com'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+APPEND_SLASH = False

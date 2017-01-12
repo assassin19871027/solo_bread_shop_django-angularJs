@@ -12,7 +12,7 @@ from django.core.files.storage import FileSystemStorage
 from django.conf import settings
 from django.core.mail import send_mail
 from rest_framework.response import Response
-from twilio.rest import TwilioRestClient 
+from twilio.rest import TwilioRestClient
 
 from models import *
 from rest_framework import viewsets
@@ -40,10 +40,24 @@ class ProductViewSet(viewsets.ModelViewSet):
 
 class SellerViewSet(viewsets.ModelViewSet):
     """
-    API endpoint for sellers
+    API endpoint for sellers to display or edited.
     """
     queryset = Baker.objects.all()
     serializer_class = SellerSerializer
+
+    def create(self, request, *args, **kwargs):
+        sd = 'ok it is'
+        print sd
+        data = request.data.copy()
+        data['business_id'] = parse_token(request)['sub']
+        data['logo'] = 'bakers/' + data['logo']
+        # print data, '@@@@@@'
+        serializer = self.get_serializer(data=data)
+        serializer.is_valid(raise_exception=True)
+        seller = Baker(**data)
+        seller.save()
+        # headers = self.get_success_headers(serializer.data)
+        return JsonResponse('success', status=201, safe=False)
 
     def retrieve(self, request, pk=None):
         parsed_token = parse_token(request)
@@ -68,7 +82,7 @@ def facebook():
     r = requests.get(access_token_url, params=params)
     # access_token = dict(parse_qsl(r.text))
     access_token = json.loads(r.text)
-    
+
     # Step 2. Retrieve information about the current user.
     r = requests.get(graph_api_url, params=access_token)
     profile = json.loads(r.text)
@@ -114,7 +128,7 @@ def stripe_(request):
     params = {
         'client_id': request_json['clientId'],
         'client_secret': settings.STRIPE_KEYS['API_KEY'],
-        'code': request_json['code'],   
+        'code': request_json['code'],
         'grant_type': 'authorization_code',
     }
 
@@ -125,7 +139,7 @@ def stripe_(request):
     # Step 2. Retrieve information about the current user.
     stripe.api_key = settings.STRIPE_KEYS['API_KEY']
     profile = stripe.Account.retrieve(access_token["stripe_user_id"])
-    
+
     # Step 3. (optional) Link accounts.
     if request.META.get('Authorization'):
         print 'Step 3 triggered ###'
@@ -155,8 +169,8 @@ def stripe_(request):
         token = create_token(user)
         return JsonResponse({'token': token})
 
-    user = Baker(logo=profile['business_logo'], 
-                 business_name=profile['business_name'], 
+    user = Baker(logo=profile['business_logo'],
+                 business_name=profile['business_name'],
                  url_business_website=profile['business_url'],
                  business_contact_name=profile['display_name'],
                  username=profile['email'].split('@')[0],
@@ -167,8 +181,6 @@ def stripe_(request):
     token = create_token(user)
     return JsonResponse({'token': token})
 
-
-
 def create_token(user):
     payload = {
         'sub': user.id,
@@ -177,7 +189,6 @@ def create_token(user):
     }
     token = jwt.encode(payload, settings.TOKEN_SECRET)
     return token.decode('unicode_escape')
-
 
 def parse_token(req):
     if req.META.get('HTTP_AUTHORIZATION'):
@@ -219,7 +230,7 @@ def charge(request):
         baker = Baker.objects.get(id=product['baker_id'])
         price_in_cents = float(product['unit_price']) * float(product['quantity']) * 100
         tax = product['delivery_fee'] * 100
-        
+
         # send division to each baker
         transfer = stripe.Transfer.create(
             amount=int(price_in_cents+tax),
@@ -227,7 +238,7 @@ def charge(request):
             destination=baker.stripe_acct_id,
             application_fee = int(price_in_cents * 0.05),
             description='Thank you for your purchase!'
-        )        
+        )
 
         sale = Sale()
         sale.baker = baker
@@ -252,13 +263,13 @@ def send_SMS(phone_number):
     '''
     send SMS to the baker to confirm the order using twillio
     '''
-    client = TwilioRestClient(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN) 
-     
+    client = TwilioRestClient(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)
+
     client.messages.create(
-        to='+1'+phone_number, 
-        from_="+18582473889", 
-        body="You have a new order from GetFreshBaked. Please check your email and confirm with the buyer.",  
-    )   
+        to='+1'+phone_number,
+        from_="+18582473889",
+        body="You have a new order from GetFreshBaked. Please check your email and confirm with the buyer.",
+    )
 
 
 @csrf_exempt

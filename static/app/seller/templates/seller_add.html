@@ -19,32 +19,31 @@
                     <form name="seller-form" ng-submit="post_seller();">
                         <md-input-container class="md-block" flex-gt-sm>
                             <label>Business Name</label>
-                            <input ng-model="seller.name" required="">
+                            <input ng-model="seller.business_name" required="">
                         </md-input-container>
                         <md-input-container class="md-block" flex-gt-sm>
                             <label>Business Owner Name</label>
-                            <input ng-model="seller.name" required="">
+                            <input ng-model="seller.business_owner_name" required="">
                         </md-input-container>
                         <md-input-container class="md-block" flex-gt-sm>
                             <label>Business Address</label>
-                            <input ng-model="seller.name" required="">
+                            <input ng-model="seller.business_address" required="">
                         </md-input-container>
                         <md-input-container class="md-block" flex-gt-sm>
                             <label>Business Phone</label>
-                            <input ng-model="seller.name" required="">
+                            <input ng-model="seller.business_phone" required="">
                         </md-input-container>
                         <md-input-container class="md-block" flex-gt-sm>
                             <label>Business Cell Phone</label>
-                            <input ng-model="seller.name" required="">
+                            <input ng-model="seller.business_cell_phone" required="">
                         </md-input-container>
                         <md-input-container class="md-block" flex-gt-sm>
                             <label>Business Email</label>
-                            <input ng-model="seller.name" required="">
+                            <input ng-model="seller.business_email" required="">
                         </md-input-container>
-                        <md-input-container class="md-block" flex-gt-sm>
-                            <label>Business Owner Email</label>
-                            <input ng-model="seller.name" required="">
-                        </md-input-container>
+                        <div class="row text-center">
+                            <md-button class="md-raised btn-w-md md-primary" type="submit" ng-disabled="!$flow.files.length">Add Seller</md-button>
+                        </div>
                     </form>
                 </div>
 

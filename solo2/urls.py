@@ -12,7 +12,7 @@ router = routers.SimpleRouter()
 router.register(r'products', views.ProductViewSet)
 router.register(r'bakers', views.SellerViewSet)
 
-""" 
+"""
 wire up our API using automatic URL routing. Additionally, include login URLs for the browsable API.
 """
 urlpatterns = [

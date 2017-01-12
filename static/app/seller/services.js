@@ -1,5 +1,5 @@
 angular.module('seller.services', ['ngResource'])
-    .factory('Seller', ['$resource', 
+    .factory('Seller', ['$resource',
         function ($resource) {
             return $resource('/bakers/:pk/:action/', {}, {
                 query: {method: 'GET', params: {action: null}, responseType: 'json'},

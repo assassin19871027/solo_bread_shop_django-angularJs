@@ -1,4 +1,4 @@
-angular.module('seller.controllers', ['buy.services', 'rzModule'])
+angular.module('seller.controllers', ['seller.services', 'rzModule'])
     .controller('CtrlSellerDetail', function($scope, Seller, $state, $rootScope, $stateParams) {
         $scope.seller = Seller.query({ pk: $stateParams.pk });
     })
@@ -28,11 +28,20 @@ angular.module('seller.controllers', ['buy.services', 'rzModule'])
         $scope.seller = {}
 
         $scope.$on('flow::fileAdded', function (event, $flow, flowFile) {
-            $scope.seller.image = flowFile.name;
+            $scope.seller.logo = flowFile.name;
         });
 
         $scope.post_seller = function(seller) {
-            
+            //$scope.seller.availability = $scope.encode_availability();
+            console.log($scope.seller);
+            console.log("ok data");
+            Seller.save($scope.seller, function(success) {
+                toastr.success('The seller is saved successfully!');
+                $state.go('app2.seller-profile');
+            },
+            function(error) {
+                toastr.error('Something is wrong!');
+            });
         }
     });
 
@@ -43,8 +52,8 @@ angular.module('app')
         $scope.rangeSlider = [];
 
         for(var i = 0; i < $scope.dow.length; i++) {
-            $scope.rangeSlider.push({ 
-                minValue: 5, 
+            $scope.rangeSlider.push({
+                minValue: 5,
                 maxValue: 21,
                 title: $scope.dow[i],
                 enabled: true,
@@ -54,10 +63,10 @@ angular.module('app')
                     ceil: 23,
                     step: 1
                 }
-            });    
+            });
         }
 
         $scope.set_time_enable = function(slider, time_enabled) {
             slider.options.disabled = !time_enabled;
-        }        
+        }
     });
